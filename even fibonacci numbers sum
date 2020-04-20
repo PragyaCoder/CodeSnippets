@@ -1,0 +1,27 @@
+def even_fibo_sum(n, flist, elist):
+    if n > flist[len(flist)-1]:
+        i = 0
+        while i < n:
+            i = flist[len(flist)-1] + flist[len(flist)-2]
+            if i>n:
+                break
+            flist.append(i)
+            if i%2 == 0:
+                elist.append(i)
+        add = 0
+        for el in elist:
+            add += el
+    else:
+        add = 0
+        for el in elist:
+            if el>n:
+                break
+            add += el
+    return add
+
+if __name__ == '__main__':
+    flist = [1, 2]
+    elist = [2]
+    n = 40000000000000000
+    res = even_fibo_sum(n, flist, elist)
+    print(res)
