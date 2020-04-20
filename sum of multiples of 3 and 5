@@ -9,7 +9,7 @@ def div_by_3(n):
             break
         last -= 1
     # Find sum of terms
-    sum = int((last*(last+3))/6)
+    sum = ((last*(last+3))//6)
     return sum
 
 def div_by_5(n):
@@ -22,7 +22,7 @@ def div_by_5(n):
             break
         last -= 1
     # Find sum of terms
-    sum = int((last*(last+5))/10)
+    sum = ((last*(last+5))//10)
     return sum
 
 def div_by_15(n):
@@ -35,7 +35,7 @@ def div_by_15(n):
             break
         last -= 1
     # Find sum of terms
-    sum = int((last*(last+15))/30)
+    sum = ((last*(last+15))//30)
     return sum
 
 if __init__ == '__main__':
