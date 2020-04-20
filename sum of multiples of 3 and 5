@@ -1,0 +1,47 @@
+import sys
+def div_by_3(n):
+    if n <=3:
+        return 0
+    # Find last term
+    last = n-1
+    while last > 3:
+        if last%3 == 0:
+            break
+        last -= 1
+    # Find sum of terms
+    sum = int((last*(last+3))/6)
+    return sum
+
+def div_by_5(n):
+    if n <=5:
+        return 0
+    # Find last term
+    last = n-1
+    while last > 5:
+        if last%5 == 0:
+            break
+        last -= 1
+    # Find sum of terms
+    sum = int((last*(last+5))/10)
+    return sum
+
+def div_by_15(n):
+    # Find last term
+    if n<=15:
+        return 0
+    last = n-1
+    while last > 15:
+        if last%15 == 0:
+            break
+        last -= 1
+    # Find sum of terms
+    sum = int((last*(last+15))/30)
+    return sum
+
+if __init__ == '__main__':
+    n = 60
+    res3 = div_by_3(n)
+    res5 = div_by_5(n)
+    res15 = div_by_15(n)
+    sum = res3 + res5 - res15
+    print(sum)
