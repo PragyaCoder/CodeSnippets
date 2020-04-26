@@ -1,0 +1,93 @@
+class CreateGraph(object):
+    def __init__(self, u, *friendships):
+        self.vertexcount = u
+        self.vertexlist = self.addvertex()
+        self.friendships = friendships
+        self.edges = []
+        self.no_neighbour = []
+        self.node_rejected = []
+        self.visitied = []
+    
+    def addvertex(self):
+        return list(range(1, self.vertexcount+1))
+    
+    def addedge(self):
+        for edge in self.friendships[0]:
+            source = edge[0]
+            destination = edge[1]
+            if source not in self.addvertex():
+                return "Source is not in vertex list provided"
+            elif destination not in self.addvertex():
+                return "Destination is not in vertex list provided"
+            elif (source, destination) in self.edges or (destination,source) in self.edges:
+                return "edge already added to the bi-directional graph"
+            else:
+                self.edges.append((source, destination))
+        
+    def searchNeighbourNodes(self, node):
+        neighbourNodes = []
+        for edge in self.edges:
+            if node == edge[0]:
+                neighbourNodes.append(edge[1])
+            elif node == edge[1]:
+                neighbourNodes.append(edge[0])
+        return sorted(neighbourNodes)
+    
+    def getedges(self):
+        return self.edges
+    
+    def traverse(self, rootnode):
+        self.visitied.append(rootnode)
+        neigh_node = self.searchNeighbourNodes(rootnode)
+        if 2 in neigh_node and rootnode != 1:
+            self.node_rejected.append(rootnode)
+        else:
+            for node in neigh_node:
+#                 print("executing loop for rootnode as {0} and neighbouring node as {1}".format(rootnode, node))
+                if node in self.visitied:
+                    if len(neigh_node) == 1:
+                        self.no_neighbour.append(rootnode)
+                    continue
+                node_neigh = self.searchNeighbourNodes(node)
+                self.visitied.append(node)
+                if 2 in node_neigh:
+                    self.node_rejected.append(node)
+                    self.node_rejected.append(rootnode)
+#                     print("below is rejected list after 2 is found in neigh node during node traversal and rejected node and rootnode are - {0}, {1}".format(node, rootnode))
+#                     print(self.node_rejected)
+                elif len(node_neigh) == 0:
+                    self.no_neighbour.append(node)
+                else:
+                    for subnode in node_neigh:
+                        if subnode in self.visitied:
+                            continue
+                        if subnode in self.node_rejected:
+                            self.node_rejected.append(node)
+                            self.node_rejected.append(rootnode)
+#                             print("below is rejected list after subnode traversal with subnode traversed being {0} and rejected node and rootnode are - (1), {2}".format(subnode, node, rootnode))
+#                             print(self.node_rejected)
+                            self.visitied.append(node)
+                            continue
+                        else:
+                            self.traverse(subnode)
+                            if subnode in self.node_rejected:
+                                self.node_rejected.append(node)
+                                self.node_rejected.append(rootnode)
+#                                 print("below is rejected list after subnode traversal with subnode traversed being {0} and rejected node and rootnode are - (1), {2}".format(subnode, node, rootnode))
+#                                 print(self.node_rejected)
+            
+    def friendsInvited(self, rootnode):
+        friends_list = []
+        if 2 in self.searchNeighbourNodes(rootnode):
+            friends_list.append(-1)
+            return friends_list
+        else:
+            self.traverse(rootnode)
+            for node in self.searchNeighbourNodes(rootnode):
+                if node not in self.node_rejected:
+                    friends_list.append(node)
+            if len(friends_list) == 0:
+                friends_list.append(-1)
+                return friends_list
+            else:
+                return friends_list
